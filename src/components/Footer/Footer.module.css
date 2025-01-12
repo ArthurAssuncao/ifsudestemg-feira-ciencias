@@ -1,0 +1,23 @@
+.footer {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: center;
+  justify-content: center;
+}
+
+.logoIF {
+  height: 64px;
+  width: auto;
+}
+
+.address {
+  color: #555;
+  ;
+}
+
+
+.developer {
+  color: #ccc;
+  display: none;
+}

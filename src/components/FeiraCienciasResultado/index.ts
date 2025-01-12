@@ -1,0 +1,1 @@
+export { FeiraCienciasResultado } from "./FeiraCienciasResultado";
