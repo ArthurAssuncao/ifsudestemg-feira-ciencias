@@ -13,11 +13,18 @@
 
 .address {
   color: #555;
-  ;
+  text-align: center;
 }
 
 
 .developer {
   color: #ccc;
   display: none;
+}
+
+@media (min-width:801px) {
+  .logoIF {
+    height: 80px;
+    width: auto;
+  }
 }

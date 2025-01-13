@@ -5,6 +5,7 @@ import { titleCase } from "title-case";
 interface MediaPorTrabalho {
   titulo: string;
   media: number;
+  numeroAvaliacoes: number;
 }
 
 export interface ResultadoTrabalho extends MediaPorTrabalho {
@@ -38,6 +39,7 @@ const adicionarColocacao = (
     titulo: trabalho.titulo,
     media: trabalho.media,
     colocacao: colocacoes[trabalho.titulo],
+    numeroAvaliacoes: trabalho.numeroAvaliacoes,
   }));
 
   return resultados;
@@ -65,6 +67,7 @@ const GeradorResultadoFeiraCiencias = {
 
     const somaPorTrabalho: SomaPorTrabalho = {};
     const contagemPorTrabalho: ContagemPorTrabalho = {};
+    const maxAvaliacoes = 2;
 
     dados.forEach((avaliacao) => {
       const titulo = titleCase(avaliacao["Título do trabalho"]);
@@ -85,10 +88,14 @@ const GeradorResultadoFeiraCiencias = {
           avaliacaoNota = avaliacaoNota % 100;
         }
 
-        somaPorTrabalho[titulo] = somaPorTrabalho[titulo] + avaliacaoNota;
+        if (contagemPorTrabalho[titulo] < maxAvaliacoes) {
+          somaPorTrabalho[titulo] = somaPorTrabalho[titulo] + avaliacaoNota;
+        }
       });
 
-      contagemPorTrabalho[titulo]++;
+      if (contagemPorTrabalho[titulo] < maxAvaliacoes) {
+        contagemPorTrabalho[titulo]++;
+      }
     });
 
     const mediasPorTrabalho: MediaPorTrabalho[] = Object.entries(
@@ -96,6 +103,7 @@ const GeradorResultadoFeiraCiencias = {
     ).map(([titulo, soma]) => ({
       titulo,
       media: soma / contagemPorTrabalho[titulo],
+      numeroAvaliacoes: contagemPorTrabalho[titulo],
     }));
 
     const mediasPorTrabalhoOrdenado = [...mediasPorTrabalho].sort(

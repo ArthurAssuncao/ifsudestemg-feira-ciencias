@@ -1,10 +1,12 @@
 .nextBody {
   display: flex;
   width: 100%;
+  min-height: 90vh;
 
   align-items: center;
   gap: 16px;
   flex-direction: column;
+  padding: 16px;
 }
 
 .content {
@@ -12,4 +14,18 @@
   flex-direction: column;
 
   gap: 16px;
+}
+
+.title {
+  font-size: 1.4rem;
+}
+
+.footer {
+  margin-top: auto;
+}
+
+@media (min-width:801px) {
+  .title {
+    font-size: 1.6rem;
+  }
 }

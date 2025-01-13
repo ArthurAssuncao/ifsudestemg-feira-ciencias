@@ -12,7 +12,7 @@
 }
 
 .tableHeader {
-  font-size: 1.4rem;
+  font-size: 1.2rem;
 }
 
 .row {
@@ -42,7 +42,8 @@ tr.row:last-of-type td.cell:last-of-type {
 }
 
 td.cell:last-of-type,
-td.cell:nth-child(2) {
+td.cell:nth-child(2),
+td.cell:nth-child(3) {
   text-align: center;
 }
 
@@ -50,11 +51,25 @@ td.cell:nth-child(2) {
   transition: 0.5s all ease;
 }
 
+
+
 .row:nth-of-type(odd) {
   background: #F2F2F2;
 }
 
+.tableHeader .row:first-child {
+  background: #d8d8d8;
+}
+
 .row:hover {
-  background-color: #b1d4e0;
+  background-color: #8bddf888;
   font-weight: bold;
+
+}
+
+
+@media (min-width:801px) {
+  .tableHeader {
+    font-size: 1.6rem;
+  }
 }

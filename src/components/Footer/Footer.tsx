@@ -2,9 +2,14 @@ import logoIF from "@/img/logo_horizontal_santosdumont-1.png";
 import Image from "next/image";
 import styles from "./Footer.module.css";
 
-const Footer = () => {
+interface Footer {
+  className?: string;
+}
+
+const Footer = (props: Footer) => {
+  const className = props.className || "";
   return (
-    <footer className={styles.footer}>
+    <footer className={[styles.footer, className].join(" ")}>
       <Image
         className={styles.logoIF}
         src={logoIF}

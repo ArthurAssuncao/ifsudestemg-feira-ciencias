@@ -50,6 +50,11 @@ const FeiraCienciasResultado = () => {
           <th className={styles.cell}>Título do Trabalho</th>
           <th className={styles.cell}>Média Final</th>
           <th className={styles.cell}>Colocação</th>
+          <th className={styles.cell}>
+            Número de
+            <br />
+            Avaliações
+          </th>
         </tr>
       </thead>
       <tbody className="">
@@ -58,6 +63,7 @@ const FeiraCienciasResultado = () => {
             <td className={styles.cell}>{trabalho.titulo}</td>
             <td className={styles.cell}>{trabalho.media.toFixed(2)}</td>
             <td className={styles.cell}>{trabalho.colocacao}</td>
+            <td className={styles.cell}>{trabalho.numeroAvaliacoes}</td>
           </tr>
         ))}
       </tbody>
