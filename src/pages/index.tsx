@@ -19,6 +19,10 @@ export default function Home() {
           content="Resultado da feira de ciências 2024 do IFSudesteMG Santos Dumont"
         />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta
+          name="google-site-verification"
+          content="Y9T0DuNRgLw-rvMvZ4wOyeop9iL6KNiWGfTV3fsXhdk"
+        />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header />
