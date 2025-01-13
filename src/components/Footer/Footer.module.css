@@ -22,9 +22,42 @@
   display: none;
 }
 
-@media (min-width:801px) {
+.credits {
+  display: none;
+}
+
+.imagesBg {
+  display: none;
+}
+
+@media (min-width:992px) {
   .logoIF {
     height: 80px;
     width: auto;
+  }
+
+  .credits {
+    display: flex;
+  }
+
+  .imagesBg {
+    display: flex;
+    position: fixed;
+    justify-content: space-between;
+    align-items: flex-end;
+    bottom: 0;
+    z-index: -1;
+    width: 98vw;
+    padding: 16px;
+  }
+
+  .girlScientist,
+  .boyScientist {
+    width: calc(100vw / 4.5);
+    height: auto;
+  }
+
+  .girlScientist {
+    transform: scaleX(-1);
   }
 }

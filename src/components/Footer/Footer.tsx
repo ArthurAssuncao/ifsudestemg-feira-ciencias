@@ -1,3 +1,5 @@
+import boyScientist from "@/img/boy-scientist.svg";
+import girlScientist from "@/img/girl-scientist.svg";
 import logoIF from "@/img/logo_horizontal_santosdumont-1.png";
 import Image from "next/image";
 import styles from "./Footer.module.css";
@@ -22,6 +24,25 @@ const Footer = (props: Footer) => {
       <span className={styles.developer}>
         Website desenvolvido por: Professor Arthur Assuncao
       </span>
+      <div className={styles.credits}>
+        <span>
+          <a href="http://www.freepik.com">
+            Images Designed by pikisuperstar / Freepik
+          </a>
+        </span>
+      </div>
+      <div className={styles.imagesBg}>
+        <Image
+          className={styles.girlScientist}
+          src={girlScientist}
+          alt="Cientista"
+        />
+        <Image
+          className={styles.boyScientist}
+          src={boyScientist}
+          alt="Cientista"
+        />
+      </div>
     </footer>
   );
 };
