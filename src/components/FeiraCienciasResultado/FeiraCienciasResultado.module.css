@@ -49,9 +49,10 @@ td.cell:nth-child(3) {
 
 .row {
   transition: 0.5s all ease;
+  border: 1px solid black;
+  position: relative;
+
 }
-
-
 
 .row:nth-of-type(odd) {
   background: #F2F2F2;
@@ -63,9 +64,8 @@ td.cell:nth-child(3) {
 
 .row:hover {
   background-color: #8bddf888;
-  font-weight: bold;
-
 }
+
 
 @media (min-width:576px) {
   .tableHeader {
@@ -75,6 +75,10 @@ td.cell:nth-child(3) {
 
 @media (min-width:992px) {
   .tableHeader {
-    font-size: 1.6rem;
+    font-size: 1.4rem;
   }
+}
+
+.updateText {
+  text-align: right;
 }
