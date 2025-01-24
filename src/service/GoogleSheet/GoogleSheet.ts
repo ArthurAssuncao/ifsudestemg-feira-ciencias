@@ -46,7 +46,7 @@ function parseCSVinJson(csvData: PapaParse.ParseResult<unknown>) {
     const keysLength = keys.length;
 
     for (let i = 0; i < keysLength; i++) {
-      const key = (keys as string[])[i];
+      const key = (keys as string[])[i].trim();
       newItem[key] = item[i];
     }
     newData.push(newItem);
@@ -70,6 +70,7 @@ const GoogleSheet = {
         // Parse the CSV data into an array of objects
         setCsvData(parsedCsvInJson); // Set the fetched data in the component's state
         // console.log(parsedCsvInJson); // Now you can work with 'csvData' in your component's state.
+        console.log("dadosJson", parsedCsvInJson);
       })
       .catch((error) => {
         console.error("Error fetching CSV data:", error);

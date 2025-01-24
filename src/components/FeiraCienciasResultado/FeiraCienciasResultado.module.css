@@ -23,6 +23,7 @@
   border: 1px solid #ccc;
   padding: 16px;
   line-height: 1.5;
+  max-width: 30vw;
 }
 
 th.cell:first-of-type {
@@ -56,6 +57,10 @@ td.cell:nth-child(3) {
 
 .row:nth-of-type(odd) {
   background: #F2F2F2;
+}
+
+.row:nth-of-type(even) {
+  background: #fff;
 }
 
 .tableHeader .row:first-child {

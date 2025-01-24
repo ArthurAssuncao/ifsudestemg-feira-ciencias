@@ -80,7 +80,11 @@ const GeradorResultadoFeiraCiencias = {
       camposNotas.forEach((campo) => {
         // console.log(avaliacao[campo]);
         let avaliacaoNota = Number(
-          avaliacao[campo].replace(" ", "").replace(",", ".")
+          avaliacao[campo]
+            .replace("'", "")
+            .replace('"', "")
+            .replace(" ", "")
+            .replace(",", ".")
         );
         if (avaliacaoNota > 10 && avaliacaoNota < 100) {
           avaliacaoNota = avaliacaoNota % 10;
