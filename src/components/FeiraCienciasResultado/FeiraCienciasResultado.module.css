@@ -24,6 +24,7 @@
   padding: 16px;
   line-height: 1.5;
   max-width: 30vw;
+  overflow: hidden;
 }
 
 th.cell:first-of-type {
@@ -46,6 +47,15 @@ td.cell:last-of-type,
 td.cell:nth-child(2),
 td.cell:nth-child(3) {
   text-align: center;
+}
+
+th.cellHidePublic,
+th.cellHidePublic,
+td.cellHidePublic,
+td.cellHidePublic,
+.hidePublic {
+  display: none;
+  /* background-color: red; */
 }
 
 .row {
@@ -86,4 +96,10 @@ td.cell:nth-child(3) {
 
 .updateText {
   text-align: right;
+}
+
+@media print {
+  .cell {
+    max-width: 90vw;
+  }
 }

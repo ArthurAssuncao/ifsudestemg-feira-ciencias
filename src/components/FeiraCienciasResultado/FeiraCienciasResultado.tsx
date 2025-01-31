@@ -1,6 +1,6 @@
 import { GoogleSheet } from "@/service/GoogleSheet";
 import { GoogleSheetData } from "@/service/GoogleSheet/GoogleSheet";
-import { format } from "date-fns";
+import { differenceInDays, format } from "date-fns";
 import { CSSProperties, useEffect, useState } from "react";
 import { ClipLoader } from "react-spinners";
 import styles from "./FeiraCienciasResultado.module.css";
@@ -18,8 +18,17 @@ const FeiraCienciasResultado = () => {
     ResultadoTrabalho[]
   >([]);
   const timeReexecMin = 3 * 60 * 1000; // 5 minutos em ms
+  const [hidePublic, setHidePublic] = useState(false);
+  const eventDate = new Date(2025, 0, 24);
+  const today = new Date();
+  const daysFromEvent = differenceInDays(eventDate, today);
+  const numDaysToHide = 3;
+  console.log(daysFromEvent);
 
   useEffect(() => {
+    if (daysFromEvent < -numDaysToHide) {
+      setHidePublic(true);
+    }
     const fetchCSV = async () => {
       console.log("CSV obtendo...");
       setLoading(true);
@@ -30,12 +39,15 @@ const FeiraCienciasResultado = () => {
 
     fetchCSV();
 
-    const intervalID = setInterval(() => {
-      fetchCSV();
-    }, timeReexecMin);
+    if (!hidePublic) {
+      const intervalID = setInterval(() => {
+        fetchCSV();
+      }, timeReexecMin);
 
-    return () => clearInterval(intervalID); // Limpeza do intervalo
-  }, [timeReexecMin]);
+      // Limpeza do intervalo
+      return () => clearInterval(intervalID);
+    }
+  }, [daysFromEvent, hidePublic, timeReexecMin]);
 
   useEffect(() => {
     const generateResults = () => {
@@ -80,8 +92,20 @@ const FeiraCienciasResultado = () => {
           <tr className={styles.row}>
             <th className={styles.cell}>Título do Trabalho</th>
             <th className={styles.cell}>Média Final</th>
-            <th className={styles.cell}>Colocação</th>
-            <th className={styles.cell}>
+            <th
+              className={[
+                styles.cell,
+                hidePublic && styles.cellHidePublic,
+              ].join(" ")}
+            >
+              Colocação
+            </th>
+            <th
+              className={[
+                styles.cell,
+                hidePublic && styles.cellHidePublic,
+              ].join(" ")}
+            >
               Número de
               <br />
               Avaliações
@@ -93,13 +117,27 @@ const FeiraCienciasResultado = () => {
             <tr key={index} className={styles.row}>
               <td className={styles.cell}>{trabalho.titulo}</td>
               <td className={styles.cell}>{trabalho.media.toFixed(2)}</td>
-              <td className={styles.cell}>{trabalho.colocacao}</td>
-              <td className={styles.cell}>{trabalho.numeroAvaliacoes}</td>
+              <td
+                className={[
+                  styles.cell,
+                  hidePublic && styles.cellHidePublic,
+                ].join(" ")}
+              >
+                {trabalho.colocacao}
+              </td>
+              <td
+                className={[
+                  styles.cell,
+                  hidePublic && styles.cellHidePublic,
+                ].join(" ")}
+              >
+                {trabalho.numeroAvaliacoes}
+              </td>
             </tr>
           ))}
         </tbody>
       </table>
-      <div className={styles.updateText}>
+      <div className={[styles.updateText, styles.hidePublic].join(" ")}>
         Próxima atualização em {format(updateTime * 1000, "mm:ss")}
       </div>
     </>
