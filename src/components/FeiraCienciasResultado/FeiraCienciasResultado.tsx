@@ -52,8 +52,19 @@ const FeiraCienciasResultado = () => {
   useEffect(() => {
     const generateResults = () => {
       console.log("Dados sendo atualizados...");
-      const resultados =
+      let resultados =
         GeradorResultadoFeiraCiencias.calcularResultados(csvData);
+      if (hidePublic) {
+        resultados = resultados.sort((a, b) => {
+          if (a.titulo < b.titulo) {
+            return -1;
+          }
+          if (a.titulo > b.titulo) {
+            return 1;
+          }
+          return 0;
+        });
+      }
       setResultadoPorTrabalho(resultados);
       setLoading(false);
       console.log("Dados atualizados");
