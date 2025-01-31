@@ -71,7 +71,7 @@ const FeiraCienciasResultado = () => {
     };
 
     generateResults();
-  }, [csvData]);
+  }, [csvData, hidePublic]);
 
   useEffect(() => {
     const intervalID = setInterval(() => {
