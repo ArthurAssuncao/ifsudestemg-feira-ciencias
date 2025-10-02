@@ -1,6 +1,10 @@
 import axios from "axios"; // Import Axios
 import PapaParse from "papaparse";
 import { Dispatch, SetStateAction } from "react";
+import {
+  PLANILHA_LINK_CSV_ABA_RESULTADO_CONDENSSADO,
+  PLANILHA_LINK_CSV_ABA_RESULTADO_CONDENSSADO_FORM_EXTERNO,
+} from "./data";
 
 /*export interface GoogleSheetDataNumerical {
   "Cumprimento da proposta e organização da equipe - insira uma nota de 0 a 2": string;
@@ -55,11 +59,14 @@ function parseCSVinJson(csvData: PapaParse.ParseResult<unknown>) {
 }
 
 const GoogleSheet = {
-  fetchCSVData: (setCsvData: Dispatch<SetStateAction<GoogleSheetData[]>>) => {
+  fetchCSVDataFormGoogle: (
+    setCsvData: Dispatch<SetStateAction<GoogleSheetData[]>>
+  ) => {
     /*const csvUrl =
       "https://docs.google.com/spreadsheets/d/e/2PACX-1vTHX-RmHukxE1Y-OyGbrf-TFO7TvVKd9hNt8l3S1HXxAAnaC_cBjCVVNl-X1eP_CiQ5bngVlnciwrlY/pub?output=csv";*/
-    const csvUrl =
-      "https://docs.google.com/spreadsheets/d/e/2PACX-1vSWhwhV_WuD_CQ9hL2l77NXO7zR_W8QdwfK4ibms352iFfE5GyjnZUsoRfbHItFCFBfgfwHv_HmlJRs/pub?gid=1128947235&single=true&output=csv";
+    // `https://docs.google.com/spreadsheets/d/e/${id}/pub?output=csv&id=${id}&gid=${gid}`
+    const csvUrl = PLANILHA_LINK_CSV_ABA_RESULTADO_CONDENSSADO;
+    console.log("csvUrl form google", csvUrl);
 
     axios
       .get(csvUrl) // Use Axios to fetch the CSV data
@@ -76,6 +83,29 @@ const GoogleSheet = {
         console.error("Error fetching CSV data:", error);
       });
   }, // Fetch the CSV data when the component mounts
+  fetchCSVDataFormExterno: (
+    setCsvData: Dispatch<SetStateAction<GoogleSheetData[]>>
+  ) => {
+    /*const csvUrl =
+      "https://docs.google.com/spreadsheets/d/e/2PACX-1vTHX-RmHukxE1Y-OyGbrf-TFO7TvVKd9hNt8l3S1HXxAAnaC_cBjCVVNl-X1eP_CiQ5bngVlnciwrlY/pub?output=csv";*/
+    // `https://docs.google.com/spreadsheets/d/e/${id}/pub?output=csv&id=${id}&gid=${gid}`
+    const csvUrl = PLANILHA_LINK_CSV_ABA_RESULTADO_CONDENSSADO_FORM_EXTERNO;
+    console.log("csvUrl form externo", csvUrl);
+    axios
+      .get(csvUrl) // Use Axios to fetch the CSV data
+      .then((response) => {
+        const options = {}; // dummy options
+        const parsedCsvData = PapaParse.parse(response.data, options);
+        const parsedCsvInJson = parseCSVinJson(parsedCsvData);
+        // Parse the CSV data into an array of objects
+        setCsvData(parsedCsvInJson); // Set the fetched data in the component's state
+        // console.log(parsedCsvInJson); // Now you can work with 'csvData' in your component's state.
+        console.log("dadosJson", parsedCsvInJson);
+      })
+      .catch((error) => {
+        console.error("Error fetching CSV data:", error);
+      });
+  },
 };
 
 export { GoogleSheet };

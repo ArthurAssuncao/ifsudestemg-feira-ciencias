@@ -1,4 +1,5 @@
 import { GoogleSheet } from "@/service/GoogleSheet";
+import { ANO_EVENTO, DIA_EVENTO, MES_EVENTO } from "@/service/GoogleSheet/data";
 import { GoogleSheetData } from "@/service/GoogleSheet/GoogleSheet";
 import { differenceInDays, format } from "date-fns";
 import { CSSProperties, useEffect, useState } from "react";
@@ -10,38 +11,57 @@ import GeradorResultadoFeiraCiencias, {
 
 const override: CSSProperties = {};
 
+const TEMPO_REEXEC_MIN = 3 * 60 * 1000; // 5 minutos em ms
+
 const FeiraCienciasResultado = () => {
   const [loading, setLoading] = useState(true);
-  const [csvData, setCsvData] = useState<GoogleSheetData[]>([]);
+  const [csvDataMerged, setCsvDataMerged] = useState<GoogleSheetData[]>([]);
+  const [csvDataFormGoogle, setCsvDataFormGoogle] = useState<GoogleSheetData[]>(
+    []
+  );
+  const [csvDataFormExterno, setCsvDataFormExterno] = useState<
+    GoogleSheetData[]
+  >([]);
   const [updateTime, setUpdateTime] = useState(0);
   const [resultadoPorTrabalho, setResultadoPorTrabalho] = useState<
     ResultadoTrabalho[]
   >([]);
-  const timeReexecMin = 3 * 60 * 1000; // 5 minutos em ms
+  const timeReexecMin = TEMPO_REEXEC_MIN; // 5 minutos em ms
   const [hidePublic, setHidePublic] = useState(false);
-  const eventDate = new Date(2025, 0, 24);
+  const eventDate = new Date(ANO_EVENTO, MES_EVENTO, DIA_EVENTO);
   const today = new Date();
   const daysFromEvent = differenceInDays(eventDate, today);
-  const numDaysToHide = 3;
-  console.log(daysFromEvent);
+  const numDaysToHide = 3; //Esconde após o evento
+  console.log("Faltam ", daysFromEvent, " dias para o evento");
 
   useEffect(() => {
     if (daysFromEvent < -numDaysToHide) {
       setHidePublic(true);
     }
-    const fetchCSV = async () => {
+    const fetchCSVFormGoogle = async () => {
       console.log("CSV obtendo...");
       setLoading(true);
-      GoogleSheet.fetchCSVData(setCsvData);
-      console.log("CSV obtido");
+      GoogleSheet.fetchCSVDataFormGoogle(setCsvDataFormGoogle);
+      console.log("CSV form google obtido");
+      setUpdateTime(timeReexecMin / 1000); // Inicia em segundos
+    };
+    const fetchCSVFormExterno = async () => {
+      console.log("CSV obtendo...");
+      setLoading(true);
+      GoogleSheet.fetchCSVDataFormExterno(setCsvDataFormExterno);
+      console.log("CSV for externo obtido");
       setUpdateTime(timeReexecMin / 1000); // Inicia em segundos
     };
 
-    fetchCSV();
+    fetchCSVFormGoogle();
+
+    fetchCSVFormExterno();
 
     if (!hidePublic) {
       const intervalID = setInterval(() => {
-        fetchCSV();
+        console.log("Intervalo de atualização de dados ativo");
+        fetchCSVFormGoogle();
+        fetchCSVFormExterno();
       }, timeReexecMin);
 
       // Limpeza do intervalo
@@ -53,7 +73,7 @@ const FeiraCienciasResultado = () => {
     const generateResults = () => {
       console.log("Dados sendo atualizados...");
       let resultados =
-        GeradorResultadoFeiraCiencias.calcularResultados(csvData);
+        GeradorResultadoFeiraCiencias.calcularResultados(csvDataMerged);
       if (hidePublic) {
         resultados = resultados.sort((a, b) => {
           if (a.titulo < b.titulo) {
@@ -71,7 +91,18 @@ const FeiraCienciasResultado = () => {
     };
 
     generateResults();
-  }, [csvData, hidePublic]);
+  }, [csvDataMerged, hidePublic]);
+
+  useEffect(() => {
+    const mergeData = () => {
+      console.log("Unindo dados dos CSVs ...");
+
+      const csvDataMerged = csvDataFormGoogle.concat(csvDataFormExterno);
+      setCsvDataMerged(csvDataMerged);
+      console.log("Dados unidos");
+    };
+    mergeData();
+  }, [csvDataFormGoogle, csvDataFormExterno]);
 
   useEffect(() => {
     const intervalID = setInterval(() => {

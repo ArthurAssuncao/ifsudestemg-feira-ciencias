@@ -12,11 +12,11 @@ export default function Home() {
     <div className={styles.nextBody}>
       <Head>
         <title>
-          Feira de Ciências 2024 - Resultado - IFSudesteMG Santos Dumont
+          Feira de Ciências 2025 - Resultado - IFSudesteMG Santos Dumont
         </title>
         <meta
           name="description"
-          content="Resultado da feira de ciências 2024 do IFSudesteMG Santos Dumont"
+          content="Resultado da feira de ciências 2025 do IFSudesteMG Santos Dumont"
         />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta
@@ -28,7 +28,7 @@ export default function Home() {
       <Header />
 
       <main className={styles.content}>
-        <h1 className={styles.title}>Resultado - Edição 2024-2025</h1>
+        <h1 className={styles.title}>Resultado - Edição 2025</h1>
 
         <FeiraCienciasResultado />
       </main>
