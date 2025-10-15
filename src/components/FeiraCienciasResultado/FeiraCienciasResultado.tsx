@@ -12,6 +12,7 @@ import GeradorResultadoFeiraCiencias, {
 const override: CSSProperties = {};
 
 const TEMPO_REEXEC_MIN = 3 * 60 * 1000; // 5 minutos em ms
+const NUMERO_COMPONENTES_NOTA = 5;
 
 const FeiraCienciasResultado = () => {
   const [loading, setLoading] = useState(true);
@@ -127,6 +128,16 @@ const FeiraCienciasResultado = () => {
     );
   }
 
+  const sortByMedia = (a: ResultadoTrabalho, b: ResultadoTrabalho) => {
+    if (a.media < b.media) {
+      return 1;
+    }
+    if (a.media > b.media) {
+      return -1;
+    }
+    return 0;
+  };
+
   return (
     <>
       <table className={styles.table}>
@@ -134,6 +145,7 @@ const FeiraCienciasResultado = () => {
           <tr className={styles.row}>
             <th className={styles.cell}>Título do Trabalho</th>
             <th className={styles.cell}>Média Final</th>
+            <th className={styles.cell}>Média Final (em 10)</th>
             <th
               className={[
                 styles.cell,
@@ -155,10 +167,13 @@ const FeiraCienciasResultado = () => {
           </tr>
         </thead>
         <tbody>
-          {resultadoPorTrabalho.map((trabalho, index) => (
+          {resultadoPorTrabalho.sort(sortByMedia).map((trabalho, index) => (
             <tr key={index} className={styles.row}>
               <td className={styles.cell}>{trabalho.titulo}</td>
               <td className={styles.cell}>{trabalho.media.toFixed(2)}</td>
+              <td className={styles.cell}>
+                {(trabalho.media / NUMERO_COMPONENTES_NOTA).toFixed(2)}
+              </td>
               <td
                 className={[
                   styles.cell,
